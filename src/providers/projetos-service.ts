@@ -7,7 +7,7 @@ import 'rxjs/add/operator/map';
 export class ProjetosService {
   projetos = [
     { codigo: 1, nome: 'Treinar Voz'},
-    { codigo: 2, nome: 'Treinar Kung Fu'},
+    { codigo: 2, nome: 'Kung Fu'},
     { codigo: 3, nome: 'Desenvolver Swift'},
     { codigo: 4, nome: 'Desenvolver Ionic'},
   ];

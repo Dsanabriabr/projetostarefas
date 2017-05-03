@@ -17,7 +17,6 @@ export class TarefasPage {
   projetos: any[];
   filtroTarefas = {};
 
-
   constructor(public navCtrl: NavController, public navParams: NavParams,
   public TarefasService: TarefasService,
   public ProjetosService: ProjetosService,
@@ -44,12 +43,15 @@ export class TarefasPage {
     this.menuCtrl.close();
   }
     filtroProjeto(c){
-      this.filtroTarefas = { projeto: c};
+      this.filtroTarefas = { projeto: c, count: 0};
       this.menuCtrl.close();
     }
     filtroDias(d){
-      this.filtroTarefas = { dias: d};
+      this.filtroTarefas = { dias: d, count: 0};
       this.menuCtrl.close();
+    }
+    getContador(){
+     return this.filtroTarefas;
     }
 
 
@@ -69,10 +71,15 @@ export class Filtro implements PipeTransform {
      (a,b) => a.data-b.data
     );
     if(filtro.projeto>=0){
+      filtro.count = itens.filter(item => item.projeto == filtro.projeto).length;
       return itens.filter(item => item.projeto == filtro.projeto);
     }
     else if(filtro.dias>=0){
       let d = (new Date()).getTime() + filtro.dias*24*60*60*1000;
+      filtro.count = itens.filter(
+          item => item.data <= d
+
+      ).length;
       return itens.filter(
           item => item.data <= d
 
@@ -80,6 +87,7 @@ export class Filtro implements PipeTransform {
 
     }
     else
+       filtro.count = itens.length;
       return itens;
   }
 }

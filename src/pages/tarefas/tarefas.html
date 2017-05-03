@@ -43,6 +43,7 @@
     <p>{{t.data | date:'dd/MM/yyyy'}}</p>
     <ion-badge item-right [class.alta]="t.prioridade==1" [class.media]="t.prioridade==2" [class.baixa]="t.prioridade==3">{{t.prioridade}}</ion-badge>
   </button>
+  <div>count: {{filtroTarefas?.count}}</div>
 </ion-list>
 <div id="mais"><button ion-button round color="secondary" (click)="novaTarefa()">
     <ion-icon name="add"></ion-icon>

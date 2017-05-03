@@ -7,14 +7,14 @@ import 'rxjs/add/operator/map';
 export class TarefasService {
 
   tarefas = [
-    { codigo : 1, projeto: 1, descricao: 'Treinar Highway to Heel(AC/DC)',
-  data: new Date(2017, 3, 30), prioridade: 2 },
+    { codigo : 1, projeto: 1, descricao: 'Treinar Highway to Hell(AC/DC)',
+  data: new Date(2017, 4, 6), prioridade: 2 },
     { codigo : 2, projeto: 4, descricao: 'Fazer trabalho pratico',
-  data: new Date(2017, 3, 28), prioridade: 1 },
+  data: new Date(2017, 4, 2), prioridade: 1 },
   { codigo : 3, projeto: 2, descricao: 'Treinar BackFlip',
-  data: new Date(2017, 4, 5), prioridade: 3 },
-  { codigo : 4, projeto: 4, descricao: 'Estudar primeira prova',
-  data: new Date(2017, 3, 27), prioridade: 1 },
+  data: new Date(2017, 5, 5), prioridade: 3 },
+  { codigo : 4, projeto: 4, descricao: 'Estudar segunda prova',
+  data: new Date(2017, 4, 6), prioridade: 1 },
   ]
   ultimoCodigo = 4;
 

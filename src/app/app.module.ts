@@ -8,7 +8,7 @@ import { TarefasPage, Filtro } from '../pages/tarefas/tarefas';
 import { ProjetosPage } from '../pages/projetos/projetos';
 import { TabsPage } from '../pages/tabs/tabs';
 import { ProjetoPage } from '../pages/projeto/projeto';
-
+import { InfoPage } from '../pages/info/info';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -24,6 +24,7 @@ import  {TarefasService} from '../providers/tarefas-service';
     TarefasPage,
     TarefaPage,
     TabsPage,
+    InfoPage,
     Filtro
   ],
   imports: [
@@ -37,6 +38,7 @@ import  {TarefasService} from '../providers/tarefas-service';
     ProjetoPage,
     TarefasPage,
     TarefaPage,
+    InfoPage,
     TabsPage
   ],
   providers: [

@@ -47,7 +47,7 @@ data: string;
   alterar(){
     let d = new Date(
       parseInt(this.data.substr(0,4)),
-      parseInt(this.data.substr(5,2)),
+      parseInt(this.data.substr(5,2))-1,
       parseInt(this.data.substr(8,2)));
     
     this.TarefasService.editTarefa(this.codigoTarefa, this.codigoProjeto,
@@ -63,7 +63,7 @@ data: string;
   incluir(){
     let d = new Date(
       parseInt(this.data.substr(0,4)),
-      parseInt(this.data.substr(5,2)),
+      parseInt(this.data.substr(5,2))-1,
       parseInt(this.data.substr(8,2)));
     
     this.TarefasService.addTarefa(this.codigoProjeto,
