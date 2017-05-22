@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {ProjetosService} from '../../providers/projetos-service'
 import {ProjetoPage} from '../projeto/projeto'
 
+
 @IonicPage()
 @Component({
   selector: 'page-projetos',
@@ -12,13 +13,12 @@ export class ProjetosPage {
 
 projetos: any[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public projetosService: ProjetosService) {
-    this.projetos = projetosService.getProjetos();
+  constructor(public navCtrl: NavController, public navParams: NavParams, public projetosService: ProjetosService) {}
 
-
-  }
-
-  ionViewDidLoad() {
+    ionViewWillEnter() {
+    this.projetosService.getProjetos().then( dados=> {
+      this.projetos = dados
+    });
     
   }
   selecionaProjeto(c){

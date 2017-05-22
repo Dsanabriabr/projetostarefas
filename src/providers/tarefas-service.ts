@@ -1,60 +1,121 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/toPromise';
 
 
 @Injectable()
 export class TarefasService {
 
-  tarefas = [
-    { codigo : 1, projeto: 1, descricao: 'Treinar Highway to Hell(AC/DC)',
-  data: new Date(2017, 4, 6), prioridade: 2 },
-    { codigo : 2, projeto: 4, descricao: 'Fazer trabalho pratico',
-  data: new Date(2017, 4, 2), prioridade: 1 },
-  { codigo : 3, projeto: 2, descricao: 'Treinar BackFlip',
-  data: new Date(2017, 5, 5), prioridade: 3 },
-  { codigo : 4, projeto: 4, descricao: 'Estudar segunda prova',
-  data: new Date(2017, 4, 6), prioridade: 1 },
-  ]
-  ultimoCodigo = 4;
+  
+  url: string = 'http://kutova.com/dev/todolist/api.php';
 
-  // constructor(public http: Http) {
+   constructor(public http: Http) { 
    
-  // }
+   }
 
-  getTarefas(): any[]{
-    return this.tarefas;
-  }
+  getTarefa(t:number):  Promise<any> {
+
+    return new Promise( resolve => { 
+
+     this.http.get(this.url+'/tarefas/'+t)
+      .toPromise()
+      .then( resposta => {
+          let dados = resposta.json();
+          let tarefa = {
+                codigo: parseInt(dados.codigo),
+                projeto: parseInt(dados.projeto),
+                descricao: dados.descricao,
+                data: new Date (
+                  parseInt( dados.data.substr(0,4) ),
+                  parseInt( dados.data.substr(5,2) ) -1,
+                  parseInt( dados.data.substr(8,2) ) ), 
+                prioridade: parseInt(dados.prioridade)
+            }
+            resolve(tarefa);
+           });
+        });
+   }
+
+  getTarefas():  Promise<any[]> {
+
+    return new Promise( resolve => { 
+
+     this.http.get(this.url+'/tarefas')
+      .toPromise()
+      .then( resposta => {
+          let dados = resposta.json();
+          let tarefas = [];
+          for(let i=0; i<dados.length; i++) {
+            tarefas.push({
+                codigo: parseInt(dados[i].codigo),
+                projeto: parseInt(dados[i].projeto),
+                descricao: dados[i].descricao,
+                data: new Date (
+                  parseInt( dados[i].data.substr(0,4) ),
+                  parseInt( dados[i].data.substr(5,2) ) -1,
+                  parseInt( dados[i].data.substr(8,2) ) ), 
+                prioridade: parseInt(dados[i].prioridade)
+            });
+           }
+          resolve(tarefas);
+        });
+    });
+   }
 
 
-editTarefa(ct:number, cp:number, n:string, d:Date, p:number){
-  for(let i=0; i<this.tarefas.length; i++){
-    if(this.tarefas[i].codigo == ct){
-      this.tarefas[i].projeto = cp;
-      this.tarefas[i].descricao = n;
-      this.tarefas[i].data = d;
-      this.tarefas[i].prioridade = p;
-      break;
-    }
-  }
+editTarefa(ct:number, cp:number, n:string, d:Date, p:number): Promise<any>{
+
+let headers = new Headers({ 'Content-Type': 'application/json'});
+
+let tarefa ={
+  projeto: cp,
+  descricao: n,
+  data: d.getFullYear()+"-"+
+                    ("0"+(d.getMonth()+1)).substr(-2,2)+"-"+
+                    ("0"+d.getDate()).substr(-2,2),
+  prioridade: p
+};
+let body = JSON.stringify(tarefa);
+
+return new Promise( resolve => {
+  this.http.put(this.url+'/tarefas/'+ct, body, {headers: headers})
+    .toPromise()
+    .then( resposta =>{
+      resolve(resposta.json());
+    });
+  });
 }
-deleteTarefa(c:number){
-  for(let i=0; i<this.tarefas.length; i++){
-    if(this.tarefas[i].codigo == c){
-      this.tarefas.splice(i,1);
-      break;
-    }
+deleteTarefa(ct:number): Promise<any>{
+    return new Promise( resolve => {
+      this.http.delete(this.url+'/tarefas/'+ct)
+      .toPromise()
+      .then( resposta =>{
+        resolve(resposta.json());
+       });
+    });
   }
-}
-  addTarefa(cp:number, n:string, d:Date, p:number){
-    this.ultimoCodigo++;
-    this.tarefas.push(
-      {codigo: this.ultimoCodigo,
+
+  addTarefa(cp:number, n:string, d:Date, p:number): Promise<any>{
+   
+    let headers = new Headers({ 'Content-Type': 'application/json'});
+
+    let tarefa ={
       projeto: cp,
       descricao: n,
-      data: d,
+      data: d.getFullYear()+"-"+
+                        ("0"+(d.getMonth()+1)).substr(-2,2)+"-"+
+                        ("0"+d.getDate()).substr(-2,2),
       prioridade: p
-      }
-    )
+      };
+    let body = JSON.stringify(tarefa);
+
+    return new Promise( resolve =>{
+      this.http.post(this.url+'/tarefas/', body, {headers: headers})
+        .toPromise()
+        .then( resposta =>{
+          resolve(resposta.json());
+        });
+      });
   }
 }

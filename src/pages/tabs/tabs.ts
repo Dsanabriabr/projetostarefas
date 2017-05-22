@@ -16,9 +16,14 @@ export class TabsPage {
   tab3Root = InfoPage;
   
   constructor(public TarefasService: TarefasService) {
-    this.tarefas = TarefasService.getTarefas();
-    this.cont = this.tarefas.length;
+    this.tarefas;
+    TarefasService.getTarefas().then( dados => {
+      this.tarefas = dados;
+      this.cont = this.tarefas.length;
+    });
+
   }
+
   getcont(){
     return this.cont;
   }

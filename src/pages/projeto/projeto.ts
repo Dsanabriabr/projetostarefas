@@ -17,28 +17,28 @@ export class ProjetoPage {
   public ProjetosService: ProjetosService) {
     this.codigoProjeto = navParams.get('codigo');
     this.novo = navParams.get('novo');
-    let projetos = ProjetosService.getProjetos();
     if(!this.novo){  
-      for(let i=0; i<projetos.length; i++){
-        if(projetos[i].codigo == this.codigoProjeto) {
-          this.nomeProjeto = projetos[i].nome;
-          break;
-        }
-      }
-    }
-}
+      ProjetosService.getProjeto(this.codigoProjeto).then( dados => {
+        this.nomeProjeto = dados.nome;
+       });
+     };
+  }
+
 
   alterar(){
-    this.ProjetosService.editProjeto(this.codigoProjeto, this.nomeProjeto);
+    this.ProjetosService.editProjeto(this.codigoProjeto, this.nomeProjeto).then(res => {
     this.navCtrl.pop();
-  }
+    });
+}
   excluir(){
-    this.ProjetosService.deleteProjeto(this.codigoProjeto);
+    this.ProjetosService.deleteProjeto(this.codigoProjeto).then(res =>{
     this.navCtrl.pop();
+    });
   }
   incluir(){
-    this.ProjetosService.addProjeto(this.nomeProjeto);
+    this.ProjetosService.addProjeto(this.nomeProjeto).then(res =>{
     this.navCtrl.pop();
+    });
   }
 
   ionViewDidLoad() {

@@ -13,7 +13,7 @@ export class TarefasPage {
 
   rootPage = null;
 
-  tarefas: any[];
+  tarefas: any[] = [];
   projetos: any[];
   filtroTarefas = {};
 
@@ -21,9 +21,16 @@ export class TarefasPage {
   public TarefasService: TarefasService,
   public ProjetosService: ProjetosService,
   public menuCtrl: MenuController) {
-    this.projetos = ProjetosService.getProjetos();
-    this.tarefas = TarefasService.getTarefas();
-}
+    
+  }
+  ionViewWillEnter() {
+    this.ProjetosService.getProjetos().then( dadosprojetos=> {
+      this.projetos = dadosprojetos
+    });
+    this.TarefasService.getTarefas().then( dados => {
+      this.tarefas = dados;
+    });
+  }
 
   nomeProjeto(c):string {
     for(let i=0; i<this.projetos.length; i++)
